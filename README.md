@@ -7,6 +7,8 @@
 
 ![image](https://github.com/Kimsswift/MusicPlayerDemo/blob/master/MusicPlay/e2.gif)
 
+下面是配置音频，如支持背景播放、创建歌曲路径等
+
     //配置音频，支持背景播放
     func musicColle(i: Int) {
         let audioSession = AVAudioSession.sharedInstance()
@@ -34,5 +36,32 @@
             audioPlayer.delegate = self
         }catch {
             print(error)
+        }
+    }
+
+下面是利用CADisplayLink来创建计时器，以便实时更新歌曲播放进度
+
+    //计时器调用的方法
+    @objc func musicPlay() {
+        percentOfPlay = vieww!.audioPlayer.currentTime / vieww!.audioPlayer.duration
+        ball.center.x = self.frame.size.width * CGFloat(percentOfPlay)
+        frontView.frame.size.width = ball.center.x
+        
+        //更新当前播放时间
+        if Int(vieww!.audioPlayer.currentTime) < 60 {
+            s = Int(vieww!.audioPlayer.currentTime)
+            if s < 10 {
+                vieww!.currentTimeLabel.text = "00:0\(s)"
+            }else {
+                vieww!.currentTimeLabel.text = "00:\(s)"
+            }
+        }else {
+            m = Int(vieww!.audioPlayer.currentTime) / 60
+            s = Int(vieww!.audioPlayer.currentTime) % 60
+            if s < 10 {
+                vieww!.currentTimeLabel.text = "\(m):0\(s)"
+            }else {
+                vieww!.currentTimeLabel.text = "\(m):\(s)"
+            }
         }
     }
