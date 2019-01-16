@@ -65,3 +65,41 @@
             }
         }
     }
+
+下面是歌曲结束时自动切换下一首，并同时能够切换专辑封面和歌名
+
+    //音频结束时调用
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if musicNum + 1 < musics.count {
+            musicNum += 1
+            
+            //更换封面和歌名
+            viewOfImage!.imageViews.image = UIImage(named: albumImg[musicNum])
+            nameLabel.text = musics[musicNum]
+            
+            musicColle(i: musicNum)
+            //播放音乐
+            audioPlayer.play()
+            
+            //根据歌曲总时长改变标签
+            if Int(audioPlayer.duration) < 60 {
+                totalTimeLabel.text = "00:\(Int(audioPlayer.duration))"
+            }else {
+                let m = Int(audioPlayer.duration) / 60
+                let s = Int(audioPlayer.duration) % 60
+                if s == 0 {
+                    totalTimeLabel.text = "\(m):00"
+                }else if s > 0 && s < 10 {
+                    totalTimeLabel.text = "\(m):0\(s)"
+                }else if s >= 10 {
+                    totalTimeLabel.text = "\(m):\(s)"
+                }
+            }
+        }else {
+            progressBarView!.display.isPaused = true
+            playBtn.setTitle("P", for: .normal)
+            isClick = false
+            print("整个库里的音乐播放完毕")
+            return
+        }
+    }
