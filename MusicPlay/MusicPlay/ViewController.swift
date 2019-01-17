@@ -218,7 +218,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, CAAnimationDelega
             
             //暂停封面的旋转
             let pauseTime = CACurrentMediaTime()
-            viewOfImage!.layer.timeOffset = pauseTime
+            viewOfImage!.layer.timeOffset = pauseTime - viewOfImage!.layer.beginTime
             viewOfImage!.layer.speed = 0
         }else {
             progressBarView!.display.isPaused = false //继续执行计时器
